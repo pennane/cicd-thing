@@ -1,0 +1,20 @@
+:root {
+  --background-color: #fafafa;
+  --text-color: #4b5563;
+  --accent-color: #36bf3b;
+  --link-color: #365abf;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: var(--background-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}

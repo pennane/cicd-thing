@@ -25,7 +25,6 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   margin-right: 2rem;
 `
-const ContentStyled = styled.div``
 
 export const Root = () => {
   return (
@@ -33,9 +32,9 @@ export const Root = () => {
       <RootStyled>
         <Nav />
         <ContentWrapper>
-          <ContentStyled>
+          <div>
             <Outlet />
-          </ContentStyled>
+          </div>
         </ContentWrapper>
       </RootStyled>
     </RootWrapper>

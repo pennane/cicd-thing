@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { DevOps } from './views/DevOps'
 import { Cd } from './views/Cd'
 import { Ci } from './views/Ci'
+import { Demo } from './views/Demo'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: 'cd-page',
         element: <Cd />
+      },
+      {
+        path: 'demo',
+        element: <Demo />
       }
     ]
   }

@@ -1,15 +1,4 @@
-import {
-  always,
-  clamp,
-  gt,
-  isNil,
-  not,
-  pathOr,
-  pipe,
-  range,
-  when,
-  __
-} from 'ramda'
+import { clamp, gt, isNil, not, pathOr, pipe, range, __ } from 'ramda'
 import { FC, useState } from 'react'
 import { Block } from '../Block'
 import { useGIndex } from './hooks/useGIndex'
@@ -99,7 +88,6 @@ export const UnitTestingExample = () => {
   const handleChange = pipe(
     pathOr('0', ['target', 'value']),
     stringToNumber,
-    when(isNaN, always(0)),
     clamp(0, 1000),
     setPeopleCount
   )
@@ -111,7 +99,7 @@ export const UnitTestingExample = () => {
 
         <WrapDisplay>
           <p>Amount of people attending:</p>
-          <input onChange={handleChange} value={peopleCount} />
+          <input type="number" onChange={handleChange} value={peopleCount} />
         </WrapDisplay>
 
         <WrapDisplay>

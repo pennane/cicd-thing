@@ -1,73 +1,106 @@
-import { isNil, not, pathOr, pipe, range } from 'ramda'
+import {
+  always,
+  clamp,
+  gt,
+  isNil,
+  not,
+  pathOr,
+  pipe,
+  range,
+  when,
+  __
+} from 'ramda'
 import { FC, useState } from 'react'
 import { Block } from '../Block'
 import { useGIndex } from './hooks/useGIndex'
-import { getBottlesCount, getTotalPrice, stringToNumber } from './lib'
+import { getBottlesCount, getTotalPrice, stringToNumber, toEur } from './lib'
 import isog from './isog.webp'
 import styled from 'styled-components'
+
+type TBottlesDisplayProps = {
+  bottleCount: number
+}
+
+type TFetchPriceButtonProps = {
+  fetchPrice: () => void
+  price?: number
+  loading: boolean
+}
 
 const WrapDisplay = styled.div`
   display: flex;
   gap: 0.5rem;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
 `
 
 const BottlesDisplayStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
-  img {
-    width: 32px;
-    margin: 0.5rem -0.25rem;
-  }
-  margin-bottom: 2rem;
 `
 
-const BottlesDisplay: FC<{ bottleCount: number }> = ({ bottleCount }) => {
+const BottleStyled = styled.div`
+  width: 0.5rem;
+  height: 2rem;
+  margin: 0.25rem;
+  img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+`
+
+const Bottle = () => (
+  <BottleStyled>
+    <img src={isog} />
+  </BottleStyled>
+)
+
+const BottlesDisplay: FC<TBottlesDisplayProps> = ({ bottleCount }) => {
   return (
     <BottlesDisplayStyled>
-      {range(0, bottleCount).map((i) => (
-        <img key={i} src={isog} />
+      {range(0, bottleCount).map((n) => (
+        <Bottle key={n} />
       ))}
     </BottlesDisplayStyled>
   )
-}
-
-type TFetchPriceButtonProps = {
-  fetchPrice: () => void
-  price?: number
 }
 
 const isNotNil = pipe(isNil, not)
 
 const FetchPriceButton: FC<TFetchPriceButtonProps> = ({
   fetchPrice,
-  price
+  price,
+  loading
 }) => {
   const priceFetched = isNotNil(price)
   const text = priceFetched
     ? 'price already fetched'
-    : ' get the price for a bottle of wine'
+    : ' get price for a bottle of wine'
 
   return (
-    <button disabled={priceFetched} onClick={fetchPrice}>
+    <button disabled={loading || priceFetched} onClick={fetchPrice}>
       {text}
     </button>
   )
 }
 
+const gt0 = gt(__, 0)
+
 export const UnitTestingExample = () => {
   const { gIndex: price, loading, fetch: fetchPrice } = useGIndex()
-  const [peopleCount, setPeopleCount] = useState(0)
-
-  const priceText = loading ? '...loading' : price || 'waiting'
+  const [peopleCount, setPeopleCount] = useState(1)
 
   const bottleCount = getBottlesCount(peopleCount)
+
   const totalPrice = getTotalPrice(price, bottleCount)
 
   const handleChange = pipe(
     pathOr('0', ['target', 'value']),
     stringToNumber,
+    when(isNaN, always(0)),
+    clamp(0, 1000),
     setPeopleCount
   )
 
@@ -75,22 +108,29 @@ export const UnitTestingExample = () => {
     <div>
       <Block>
         <h2>Prepare purchases for a dinner</h2>
+
         <WrapDisplay>
           <p>Amount of people attending:</p>
-          <input onChange={handleChange} />
+          <input onChange={handleChange} value={peopleCount} />
         </WrapDisplay>
 
         <WrapDisplay>
           <p>Bottles required:</p>
-
           <BottlesDisplay bottleCount={bottleCount} />
         </WrapDisplay>
 
-        <p>Price: {priceText}</p>
+        <p>
+          Price:{' '}
+          {loading ? 'loading..' : isNil(price) ? 'waiting' : toEur(price)}
+        </p>
 
-        <FetchPriceButton price={price} fetchPrice={fetchPrice} />
+        <FetchPriceButton
+          price={price}
+          fetchPrice={fetchPrice}
+          loading={loading}
+        />
 
-        <p>Price for all the wine: {totalPrice}</p>
+        <p>Total price for wine: {gt0(totalPrice) ? toEur(totalPrice) : ''}</p>
       </Block>
     </div>
   )

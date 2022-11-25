@@ -15,7 +15,6 @@ const RootStyled = styled.div`
   padding: 1rem;
   padding-bottom: 4rem;
   margin: 0 1rem;
-  margin-bottom: 6rem;
   gap: 1rem;
   width: 750px;
   max-width: 100%;

@@ -1,6 +1,6 @@
 name: 'Deployment pipeline'
 
-on: [push, pull_request]
+on: [push]
 jobs:
   unit_tests:
     runs-on: ubuntu-20.04

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint -c ./.eslintrc.json ./src/**/*.{ts,tsx}"
   },
   "dependencies": {
     "@types/ramda": "^0.28.20",

@@ -5,4 +5,5 @@ export const stringToNumber = (s: string) => parseInt(s)
 export const getBottlesCount = (people = 0) =>
   Math.ceil(people * BOTTLES_OF_WINE_PER_PERSON)
 
-export const getTotalPrice = (price = 0, bottleCount = 0) => price * bottleCount
+export const getTotalPrice = (price = 0, bottleCount = 0) =>
+  price * bottleCount * 0.8

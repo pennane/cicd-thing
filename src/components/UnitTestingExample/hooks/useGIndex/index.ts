@@ -2,7 +2,7 @@ import { prop } from 'ramda'
 import { useEffect, useState } from 'react'
 import { fetchGIndex } from '../../../../api/gIndex'
 
-const parseGIndex = (json: any) => {
+export const parseGIndex = (json: any) => {
   const value = Number(prop('index', json))
   if (isNaN(value)) return
   return value

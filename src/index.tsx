@@ -9,11 +9,13 @@ import { DevOps } from './views/DevOps'
 import { Cd } from './views/Cd'
 import { Ci } from './views/Ci'
 import { Demo } from './views/Demo'
+import { NotFound } from './components/NotFound'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '',

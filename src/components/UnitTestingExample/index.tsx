@@ -1,4 +1,4 @@
-import { pathOr, pipe, range } from 'ramda'
+import { isNil, not, pathOr, pipe, range } from 'ramda'
 import { FC, useState } from 'react'
 import { Block } from '../Block'
 import { useGIndex } from './hooks/useGIndex'
@@ -33,6 +33,29 @@ const BottlesDisplay: FC<{ bottleCount: number }> = ({ bottleCount }) => {
   )
 }
 
+type TFetchPriceButtonProps = {
+  fetchPrice: () => void
+  price?: number
+}
+
+const isNotNil = pipe(isNil, not)
+
+const FetchPriceButton: FC<TFetchPriceButtonProps> = ({
+  fetchPrice,
+  price
+}) => {
+  const priceFetched = isNotNil(price)
+  const text = priceFetched
+    ? 'price already fetched'
+    : ' get the price for a bottle of wine'
+
+  return (
+    <button disabled={priceFetched} onClick={fetchPrice}>
+      {text}
+    </button>
+  )
+}
+
 export const UnitTestingExample = () => {
   const { gIndex: price, loading, fetch: fetchPrice } = useGIndex()
   const [peopleCount, setPeopleCount] = useState(0)
@@ -64,7 +87,8 @@ export const UnitTestingExample = () => {
         </WrapDisplay>
 
         <p>Price: {priceText}</p>
-        <button onClick={fetchPrice}>get the price for a bottle of wine</button>
+
+        <FetchPriceButton price={price} fetchPrice={fetchPrice} />
 
         <p>Price for all the wine: {totalPrice}</p>
       </Block>

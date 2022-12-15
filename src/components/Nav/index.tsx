@@ -14,12 +14,8 @@ const NavStyled = styled.nav`
   gap: 1rem;
 `
 
-const NavLinkStyled = styled(NavLink)`
-  color: red;
-`
-
 const NavItem: FC<TNavItemProps> = ({ route }) => {
-  return <NavLinkStyled to={route.path}>{route.name}</NavLinkStyled>
+  return <NavLink to={route.path}>{route.name}</NavLink>
 }
 
 export const Nav = () => {
